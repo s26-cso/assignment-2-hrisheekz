@@ -40,7 +40,7 @@ insert:
 
 .finding_node:
     lw t0, 0(s1)
-    beq s2, t0, .done
+    beq s2, t0, .done_insert
     blt s2, t0, .goleft
 
 .goright:
@@ -53,7 +53,7 @@ insert:
     mv a0, s2
     call make_node
     sd a0, 16(s1)               # Attach new node to the parent we kept in s1
-    jal x0, .done
+    jal x0, .done_insert
 
 .goleft:
     ld t1, 8(s1)                # Load left child into t1
@@ -65,9 +65,9 @@ insert:
     mv a0, s2
     call make_node
     sd a0, 8(s1)                # Attach to parent's left
-    jal x0, .done
+    jal x0, .done_insert
 
-.done:
+.done_insert:
     mv a0, s0
     ld ra, 24(sp)
     ld s0, 16(sp)
