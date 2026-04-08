@@ -32,7 +32,7 @@ insert:
     sd ra, 24(sp)
     sd s0, 16(sp)
     sd s1, 8(sp)
-    sw s2, 4(sp)
+    sd s2, 0(sp)
 
     addi s0, a0, 0      # s0 = root
     addi s1, a0, 0      # s1 = current = root
@@ -72,7 +72,7 @@ insert:
     ld ra, 24(sp)
     ld s0, 16(sp)
     ld s1, 8(sp)
-    lw s2, 4(sp)
+    ld s2, 0(sp)
     addi sp, sp, 32
     ret
    
