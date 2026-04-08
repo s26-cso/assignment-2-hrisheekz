@@ -1,4 +1,5 @@
 
+
 .globl make_node
 
 make_node:
@@ -81,18 +82,18 @@ insert:
 
 .globl get
 get:
-.loop:
+.get_loop:
      beqz a0, .notfound     # root = NULL
      lw t0, 0(a0)
      beq a1, t0, .found     # current->val=val
-     blt a1, t0, .searchleft    # val < current->val so we go left
+     blt a1, t0, .get_searchleft    # val < current->val so we go left
 
      ld a0, 16(a0)              # searching in right subtree
-     jal x0, .loop
+     jal x0, .get_loop
 
-.searchleft:
+.get_searchleft:
     ld a0, 8(a0)
-    jal x0, .loop
+    jal x0, .get_loop
 
 .notfound:
     addi a0, x0, 0          # returning NULL when node not found
@@ -107,19 +108,19 @@ get:
 getAtMost:
     addi t1, x0, -1     # Initializing answer to 0
 
-.loop:
+.get_atmost_loop:
     beqz a1, .done      # root = NULL 
     lw t0, 0(a1)
     beq a0, t0, .foundexact     # current nodes value is the exact value
-    blt a0, t0, .searchleft    # if val < current->val search in the left sub tree
+    blt a0, t0, .get_atmost_searchleft    # if val < current->val search in the left sub tree
 
     addi t1, t0, 0              # updating answer 
     ld a1, 16(a1)               # going to right sub tree when val > current->val
-    jal x0, .loop
+    jal x0, .get_atmost_loop
 
-.searchleft:
+.get_atmost_searchleft:
     ld a1, 8(a1)
-    jal x0, .loop
+    jal x0, .get_atmost_loop
 
 .foundexact:
     ret     # a0 is the required value
