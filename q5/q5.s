@@ -53,10 +53,10 @@ loop_compare:
     mv a0, s0
     mv a1, s2
     li a2, 0
-    call fseek      # a0 = right_char
+    call fseek      
 
     mv a0, s0
-    call fgetc
+    call fgetc      # a0 = right_char
 
     bne s3, a0, not_palindrome
     addi s1, s1, 1
