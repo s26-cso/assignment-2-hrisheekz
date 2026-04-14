@@ -16,8 +16,8 @@ main:
 
     li t0, 1
     ble a0, t0, end_main
-    addi s0, a0, -1
-    addi s1, a1, 0
+    addi s0, a0, -1     # s0 = number of elements
+    addi s1, a1, 0      # s1 = pointer to first element in input
 
     slli s2, s0, 2
     sub sp, sp, s2
@@ -27,47 +27,47 @@ main:
     sub sp, sp, s2
     addi s4, sp, 0      # pointer to result arr
 
-    addi t0, x0, 0
+    addi t0, x0, 0      # i = 0
     loop:
         bge t0, s0, start
         addi t1, t0, 1
         slli t1, t1, 3
         add t1, s1, t1
-        ld a0, 0(t1)
+        ld a0, 0(t1)        # loading val of input arr
 
         addi sp, sp, -16
         sd t0, 0(sp)
 
-        call atoi
+        call atoi           # convert string to int 
 
         ld t0, 0(sp)
         addi sp, sp, 16
 
         slli t1, t0, 2
         add t1, s3, t1
-        sw a0, 0(t1)
+        sw a0, 0(t1)        # arr[i] = atoi(argv[i+1])
 
         addi t0, t0, 1
         jal x0, loop
 
     start:
-        addi a0, s3, 0
-        addi a1, s4, 0
-        addi a2, s0, 0
+        addi a0, s3, 0      # a0 = arr
+        addi a1, s4, 0      # a1 = result
+        addi a2, s0, 0      # a2 = n
         call next_greater
 
-        li t0, 0
+        li t0, 0            # i = 0
         print:
         bge t0, s0, end
         slli t1, t0, 2
         add t1, s4, t1
         lw a1, 0(t1)
         la a0, format_str
-        addi sp, sp, -16
+        addi sp, sp, -16       # saving t0
         sd t0, 0(sp)
 
         call printf
-        ld t0, 0(sp)
+        ld t0, 0(sp)        # restore t0
         addi sp, sp, 16
 
         addi t0, t0, 1
@@ -77,7 +77,7 @@ main:
         la a0, newline_str
         call printf
 
-        slli t0, s0, 3
+        slli t0, s0, 3      # deallocate arr and 'result' arrays from stack
         add sp, sp, t0
 
     end_main:
@@ -102,7 +102,8 @@ next_greater:
     addi s1, a1, 0      # s1 = result
     addi s2, a2, 0      # s2 = n
     
-    slli t0, s2, 2
+    
+    slli t0, s2, 2       # Allocate memory for the Stack array (n * 4 bytes)
     sub sp, sp, t0
     addi t1, sp, 0      # t1 = address of stack
 
@@ -125,7 +126,7 @@ for_loop:
     bltz t3, end_for
 
 while_loop:
-    bltz t2, end_while
+    bltz t2, end_while      # checking if stack is empty
 
     slli t4, t2, 2
     add t4, t1, t4
@@ -136,15 +137,15 @@ while_loop:
 
     slli t0, t3, 2
     add t0, s0, t0
-    lw t0, 0(t0)
+    lw t0, 0(t0)      # t0 = arr[i]
 
-    bgt t6, t0, end_while
+    bgt t6, t0, end_while       # If arr[stack.top()] > arr[i], break out of the while loop
 
     addi t2, t2, -1
     jal x0, while_loop
 
 end_while:
-    bltz t2, stack_empty
+    bltz t2, stack_empty        # if (!stack.empty()) result[i] = stack.top()
 
     slli t4, t2, 2
     add t4, t1, t4
