@@ -8,16 +8,14 @@ int main(){
     char op[10];
     int num1, num2;
 
-    while(1){
-        scanf("%s %d %d", op, &num1, &num2);
+    while(scanf("%s %d %d", op, &num1, &num2)==3){
         char lib_name[32];
         snprintf(lib_name,sizeof(lib_name),"./lib%s.so",op);
 
-        void* handle=dlopen(lib_name, RTLD_LAZY);
+        void* handle=dlopen(lib_name,RTLD_LAZY);
         if(!handle) continue;
 
-
-        fptr operation=(fptr)dlsym(handle, op);
+        fptr operation=(fptr)dlsym(handle,op);
         if(!operation){
             dlclose(handle);
             continue;
