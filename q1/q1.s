@@ -106,7 +106,7 @@ get:
 
 .globl getAtMost
 getAtMost:
-    addi t1, x0, -1     # Initializing answer to 0
+    addi t1, x0, -1     # Initializing answer to -1
 
 .get_atmost_loop:
     beqz a1, .done      # root = NULL 
