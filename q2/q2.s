@@ -153,7 +153,7 @@ end_while:
 
     slli t4, t3, 2
     add t4, s1, t4
-    sw t5, 0(t4)    result[i] = stack[top]
+    sw t5, 0(t4)   #  result[i] = stack[top]
 
 stack_empty:
     addi t2, t2, 1
