@@ -1,5 +1,6 @@
 .section .data
 format_str:  .asciz "%d "
+format_strend: .asciz "%d"
 newline_str: .asciz "\n"
 
 .section .text
@@ -57,8 +58,10 @@ main:
         call next_greater
 
         li t0, 0            # i = 0
+        addi a0, s0, -1
         print:
         bge t0, s0, end
+        beq t0, a0, last
         slli t1, t0, 2
         add t1, s4, t1
         lw a1, 0(t1)
@@ -72,6 +75,19 @@ main:
 
         addi t0, t0, 1
         jal x0, print
+
+        last:
+        slli t1, t0, 2
+        add t1, s4, t1
+        lw a1, 0(t1)
+        la a0, format_strend
+        addi sp, sp, -16       # saving t0
+        sd t0, 0(sp)
+
+        call printf
+        ld t0, 0(sp)        # restore t0
+        addi sp, sp, 16
+            
 
         end:
         la a0, newline_str
@@ -153,7 +169,7 @@ end_while:
 
     slli t4, t3, 2
     add t4, s1, t4
-    sw t5, 0(t4)   #  result[i] = stack[top]
+    sw t5, 0(t4)    # result[i] = stack[top]
 
 stack_empty:
     addi t2, t2, 1
@@ -174,5 +190,16 @@ end_for:
     ld ra, 24(sp)
     addi sp, sp, 32
     ret
+
+
+
+    
+
+
+
+    
+
+
+
 
 
