@@ -58,10 +58,10 @@ main:
         call next_greater
 
         li t0, 0            # i = 0
-        addi a0, s0, -1
+        addi t2, s0, -1
         print:
         bge t0, s0, end
-        beq t0, a0, last
+        beq t0, t2, last
         slli t1, t0, 2
         add t1, s4, t1
         lw a1, 0(t1)
